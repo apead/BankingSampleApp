@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BankingApp.Views.CustomerListView"
+             Title="Future Lab Banking"
+             BackgroundColor="White">
+    <Grid RowDefinitions="Auto,*"
+          Padding="24,28">
+        <VerticalStackLayout Grid.Row="0"
+                             Spacing="6"
+                             Margin="0,0,0,22">
+            <Label Text="Customer directory"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   TextColor="Black" />
+            <Grid ColumnDefinitions="*,Auto"
+                  ColumnSpacing="12">
+                <Label Text="Customer directory"
+                       FontSize="14"
+                       TextColor="Black"
+                       VerticalOptions="Center" />
+                <Border Grid.Column="1"
+                        BackgroundColor="Black"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="12,6"
+                        VerticalOptions="Center">
+                    <Label Text="{Binding Customers.Count, StringFormat='{0} customers'}"
+                           FontSize="12"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                </Border>
+            </Grid>
+        </VerticalStackLayout>
+
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Customers}"
+                        SelectionMode="Single"
+                        ItemSizingStrategy="MeasureAllItems">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical"
+                                   ItemSpacing="12" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border BackgroundColor="White"
+                            Stroke="Black"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 16"
+                            Padding="18">
+                        <VerticalStackLayout Spacing="14">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="16">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="FIRST NAME"
+                                           FontSize="10"
+                                           FontAttributes="Bold"
+                                          
+                                           TextColor="Black" />
+                                    <Label Text="{Binding FirstName}"
+                                           FontSize="16"
+                                           FontAttributes="Bold"
+                                           TextColor="Black"
+                                           LineBreakMode="TailTruncation" />
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1"
+                                                     Spacing="5">
+                                    <Label Text="LAST NAME"
+                                           FontSize="10"
+                                           FontAttributes="Bold"
+                                         
+                                           TextColor="Black" />
+                                    <Label Text="{Binding LastName}"
+                                           FontSize="16"
+                                           FontAttributes="Bold"
+                                           TextColor="Black"
+                                           LineBreakMode="TailTruncation" />
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <VerticalStackLayout Spacing="5">
+                                <Label Text="ID NUMBER"
+                                       FontSize="10"
+                                       FontAttributes="Bold"
+                                       
+                                       TextColor="Black" />
+                                <Label Text="{Binding IdNumber, TargetNullValue='Not provided'}"
+                                       FontSize="14"
+                                       TextColor="Black" />
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="24,48"
+                                     Spacing="8"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="Center">
+                    <Label Text="No customers yet"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="Black"
+                           HorizontalTextAlignment="Center" />
+                    <Label Text="Customer profiles will appear here once added."
+                           FontSize="14"
+                           TextColor="Black"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </Grid>
+</ContentPage>
