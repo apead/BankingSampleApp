@@ -40,6 +40,73 @@ namespace BankingApp.Services
             return await connection.Table<Customer>().ToListAsync();
         }
 
+        public async Task<List<Customer>> SearchCustomersByLastNameAsync(string? searchText)
+        {
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                return await GetAllCustomersAsync();
+            }
+
+            SQLiteAsyncConnection connection = await GetDbConnectionAsync();
+            string name = searchText.Trim();
+            string pattern = "%" + name + "%";
+
+            return await connection.QueryAsync<Customer>(
+                @"SELECT * FROM Customer
+                  WHERE LastName LIKE ?",
+                pattern);
+        }
+
+        public async Task<List<BankAccount>> GetAccountsByCustomerAsync(int customerId)
+        {
+            SQLiteAsyncConnection connection = await GetDbConnectionAsync();
+            
+            var accounts = await connection.Table<BankAccount>()
+                .Where(bankAccount => bankAccount.CustomerId == customerId)
+                .ToListAsync();
+            
+            var accountTypes = (await connection.Table<BankAccountType>().ToListAsync())
+                .ToDictionary(type => type.BankAccountTypeId);
+
+            foreach (var account in accounts)
+            {
+                if (!accountTypes.TryGetValue(account.BankAccountTypeId, out var accountType))
+                {
+                    throw new InvalidOperationException(
+                        $"Account {account.BankAccountId} references missing account type {account.BankAccountTypeId}.");
+                }
+
+                account.AccountTypeDescription = accountType.Description;
+            }
+
+            return accounts;
+        }
+
+        public async Task<List<Transaction>> GetTransactionsByAccountAsync(int bankAccountId)
+        {
+            SQLiteAsyncConnection connection = await GetDbConnectionAsync();
+
+            var transactions = await connection.Table<Transaction>()
+                .Where(t => t.BankAccountId == bankAccountId)
+                .OrderByDescending(t => t.TransactionDate)
+                .ToListAsync();
+            var transactionTypes = (await connection.Table<TransactionType>().ToListAsync())
+                .ToDictionary(type => type.TransactionTypeId);
+
+            foreach (var transaction in transactions)
+            {
+                if (!transactionTypes.TryGetValue(transaction.TransactionTypeId, out var transactionType))
+                {
+                    throw new InvalidOperationException(
+                        $"Transaction {transaction.TransactionId} references missing transaction type {transaction.TransactionTypeId}.");
+                }
+
+                transaction.TransactionTypeDescription = transactionType.Description;
+            }
+
+            return transactions;
+        }
+
         private async Task ExtractDbfromMauiAssetAsync()
         {
             using Stream inputStream = await FileSystem.Current.OpenAppPackageFileAsync(dbFileName);

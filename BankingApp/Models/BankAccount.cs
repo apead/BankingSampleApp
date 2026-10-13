@@ -18,6 +18,9 @@ public class BankAccount
     [NotNull, Indexed]
     public int BankAccountTypeId { get; set; }
 
+    [Ignore]
+    public string AccountTypeDescription { get; set; } = string.Empty;
+
     // FK -> Customer.CustomerId
     [NotNull, Indexed]
     public int CustomerId { get; set; }

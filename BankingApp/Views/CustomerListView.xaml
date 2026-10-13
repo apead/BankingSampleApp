@@ -5,7 +5,7 @@
              Title="Future Lab Banking"
              BackgroundColor="White">
     <Grid RowDefinitions="Auto,*"
-          Padding="24,28">
+          Padding="24,8,24,20">
         <VerticalStackLayout Grid.Row="0"
                              Spacing="6"
                              Margin="0,0,0,22">
@@ -31,11 +31,18 @@
                            TextColor="White" />
                 </Border>
             </Grid>
+            <SearchBar x:Name="CustomerSearchBar"
+                       Placeholder="Search by last name"
+                       TextChanged="CustomerSearchBar_TextChanged"
+                       TextColor="Black"
+                       PlaceholderColor="#666666"
+                       Margin="0,10,0,0" />
         </VerticalStackLayout>
 
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Customers}"
                         SelectionMode="Single"
+                        SelectionChanged="CollectionView_SelectionChanged"
                         ItemSizingStrategy="MeasureAllItems">
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical"
@@ -97,12 +104,12 @@
                                      Spacing="8"
                                      HorizontalOptions="Center"
                                      VerticalOptions="Center">
-                    <Label Text="No customers yet"
+                    <Label Text="No customers found"
                            FontSize="18"
                            FontAttributes="Bold"
                            TextColor="Black"
                            HorizontalTextAlignment="Center" />
-                    <Label Text="Customer profiles will appear here once added."
+                    <Label Text="Try another last name or clear the search to show all customers."
                            FontSize="14"
                            TextColor="Black"
                            HorizontalTextAlignment="Center" />

@@ -23,6 +23,9 @@ public class Transaction
     [NotNull, Indexed]
     public int TransactionTypeId { get; set; }
 
+    [Ignore]
+    public string TransactionTypeDescription { get; set; } = string.Empty;
+
     // FK -> BankAccount.BankAccountId
     [NotNull, Indexed]
     public int BankAccountId { get; set; }

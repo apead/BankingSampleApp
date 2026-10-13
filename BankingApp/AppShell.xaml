@@ -9,6 +9,6 @@
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate views:CustomerListView}"
-        Route="CustomerListView" />
+        Route="customerlist" />
 
 </Shell>
