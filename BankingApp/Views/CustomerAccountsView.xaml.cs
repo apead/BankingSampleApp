@@ -38,7 +38,7 @@ public partial class CustomerAccountsView : ContentPage, IQueryAttributable
 	private ObservableCollection<BankAccount> customerAccounts = new ObservableCollection<BankAccount>();
 
 	public ObservableCollection<BankAccount> CustomerAccounts
-	{
+    {
 		get { return customerAccounts; }
 		set { customerAccounts = value;
 			OnPropertyChanged();
@@ -56,7 +56,10 @@ public partial class CustomerAccountsView : ContentPage, IQueryAttributable
 
 	public void ApplyQueryAttributes(IDictionary<string, object> query)
 	{
-		Customer = query["Customer"] as Customer;
+		if (query.ContainsKey("Customer"))
+		{
+			Customer = query["Customer"] as Customer;
+		}
 	}
 
 	protected override async void OnAppearing()
@@ -105,4 +108,6 @@ public partial class CustomerAccountsView : ContentPage, IQueryAttributable
 		
 		}
 	}
+
+
 }

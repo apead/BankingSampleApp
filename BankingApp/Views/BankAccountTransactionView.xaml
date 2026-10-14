@@ -186,7 +186,7 @@
                     FontAttributes="Bold"
                     CornerRadius="12"
                     MinimumHeightRequest="48"
-                    Padding="10,12" />
+                    Padding="10,12" Clicked="DepositButtonClicked" />
             <Button Grid.Column="1"
                     Text="Make a Withdrawl"
                     BackgroundColor="#B91C1C"
@@ -195,7 +195,7 @@
                     FontAttributes="Bold"
                     CornerRadius="12"
                     MinimumHeightRequest="48"
-                    Padding="10,12" />
+                    Padding="10,12" Clicked="WithdrawlButtonClicked" />
         </Grid>
     </Grid>
 </ContentPage>

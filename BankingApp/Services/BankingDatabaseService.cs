@@ -1,4 +1,5 @@
-﻿using BankingApp.Models;
+﻿using BankingApp.Enums;
+using BankingApp.Models;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -106,6 +107,35 @@ namespace BankingApp.Services
 
             return transactions;
         }
+
+        public async Task MakeTransactionAsync(int bankAccountId, string reference, decimal amount, TransactionTypeEnum transactionType)
+        {
+            if(transactionType == TransactionTypeEnum.Withdrawl)
+            {
+                amount = -amount;
+            }
+
+            SQLiteAsyncConnection connection = await GetDbConnectionAsync();
+
+
+            BankAccount account = await connection.Table<BankAccount>().Where(x => x.BankAccountId == bankAccountId).FirstOrDefaultAsync();
+
+            account.Balance += amount;
+
+            await connection.UpdateAsync(account);
+
+            Transaction transaction = new Transaction();
+            transaction.TransactionDate = DateTime.Now;
+            transaction.Reference = reference;
+            transaction.BankAccountId = bankAccountId;
+            transaction.TransactionAmount = amount;
+            transaction.TransactionTypeId = (int) transactionType;
+
+            await connection.InsertAsync(transaction);
+
+          
+        }
+
 
         private async Task ExtractDbfromMauiAssetAsync()
         {

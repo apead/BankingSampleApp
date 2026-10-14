@@ -15,6 +15,7 @@ namespace BankingApp
         {
             Routing.RegisterRoute("customeraccounts", typeof(CustomerAccountsView));
             Routing.RegisterRoute("bankaccounttransactions", typeof(BankAccountTransactionView));
+            Routing.RegisterRoute("transactionrecord", typeof(TransactionRecordView));
         }
     }
 }

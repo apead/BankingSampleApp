@@ -1,3 +1,4 @@
+using BankingApp.Enums;
 using BankingApp.Models;
 using BankingApp.Services;
 using System.Collections.ObjectModel;
@@ -77,8 +78,15 @@ public partial class BankAccountTransactionView : ContentPage, IQueryAttributabl
 
 	public void ApplyQueryAttributes(IDictionary<string, object> query)
 	{
-		BankAccount = query["BankAccount"] as BankAccount;
-		Customer = query["Customer"] as Customer;
+		if (query.ContainsKey("BankAccount"))
+		{
+			BankAccount = query["BankAccount"] as BankAccount;
+		}
+
+		if (query.ContainsKey("Customer"))
+		{
+			Customer = query["Customer"] as Customer;
+		}
 	}
 
 	protected override async void OnAppearing()
@@ -92,8 +100,24 @@ public partial class BankAccountTransactionView : ContentPage, IQueryAttributabl
 	{
 		if (BankAccount != null)
 		{
-			var txs = await bankingDatabaseService.GetTransactionsByAccountAsync(BankAccount.BankAccountId);
-			Transactions = new ObservableCollection<Transaction>(txs);
+			var bankingTransactions = await bankingDatabaseService.GetTransactionsByAccountAsync(BankAccount.BankAccountId);
+			Transactions = new ObservableCollection<Transaction>(bankingTransactions);
 		}
 	}
+
+    private async void DepositButtonClicked(object sender, EventArgs e)
+    {
+        var navigationParameter = new ShellNavigationQueryParameters
+                {
+                    { "BankAccount", bankAccount },
+			        {"TransactionType", TransactionTypeEnum.Deposit }
+                };
+
+        await Shell.Current.GoToAsync("transactionrecord", navigationParameter);
+    }
+
+    private void WithdrawlButtonClicked(object sender, EventArgs e)
+    {
+
+    }
 }

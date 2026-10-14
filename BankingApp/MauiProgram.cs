@@ -14,7 +14,7 @@ namespace BankingApp
             CultureInfo.DefaultThreadCurrentUICulture = culture;
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
-
+         
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -33,6 +33,7 @@ namespace BankingApp
             builder.Services.AddTransient<CustomerListView>();
             builder.Services.AddTransient<CustomerAccountsView>();
             builder.Services.AddTransient<BankAccountTransactionView>();
+            builder.Services.AddTransient<TransactionRecordView>();
 
             return builder.Build();
         }
