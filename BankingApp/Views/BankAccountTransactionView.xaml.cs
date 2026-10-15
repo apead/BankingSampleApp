@@ -94,7 +94,9 @@ public partial class BankAccountTransactionView : ContentPage, IQueryAttributabl
 		base.OnAppearing();
 
 		await LoadTransactionsAsync();
-	}
+		await LoadBankAccountAsync();
+
+    }
 
 	private async Task LoadTransactionsAsync()
 	{
@@ -104,6 +106,15 @@ public partial class BankAccountTransactionView : ContentPage, IQueryAttributabl
 			Transactions = new ObservableCollection<Transaction>(bankingTransactions);
 		}
 	}
+
+    private async Task LoadBankAccountAsync()
+    {
+        if (BankAccount != null)
+        {
+            BankAccount = await bankingDatabaseService.GetBankAccountById(bankAccount.BankAccountId);
+            
+        }
+    }
 
     private async void DepositButtonClicked(object sender, EventArgs e)
     {
@@ -116,8 +127,15 @@ public partial class BankAccountTransactionView : ContentPage, IQueryAttributabl
         await Shell.Current.GoToAsync("transactionrecord", navigationParameter);
     }
 
-    private void WithdrawlButtonClicked(object sender, EventArgs e)
+    private async void WithdrawlButtonClicked(object sender, EventArgs e)
     {
+        var navigationParameter = new ShellNavigationQueryParameters
+                {
+                    { "BankAccount", bankAccount },
+                    {"TransactionType", TransactionTypeEnum.Withdrawl }
+                };
+
+        await Shell.Current.GoToAsync("transactionrecord", navigationParameter);
 
     }
 }

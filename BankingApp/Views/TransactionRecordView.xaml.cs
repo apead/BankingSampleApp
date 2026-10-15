@@ -270,6 +270,8 @@ public partial class TransactionRecordView : ContentPage, IQueryAttributable
 			await bankingDatabaseService.MakeTransactionAsync(BankAccount.BankAccountId, Reference.Trim(), parsedAmount, transactionTypeEnum);
 
 			await Shell.Current.GoToAsync("..");
+
+			//
 		}
 		catch (Exception ex)
 		{

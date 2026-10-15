@@ -41,6 +41,13 @@ namespace BankingApp.Services
             return await connection.Table<Customer>().ToListAsync();
         }
 
+        public async Task<BankAccount> GetBankAccountById(int bankAccountId)
+        {
+            SQLiteAsyncConnection connection = await GetDbConnectionAsync();
+
+            return await connection.Table<BankAccount>().Where(x => x.BankAccountId == bankAccountId).FirstOrDefaultAsync();
+        }
+
         public async Task<List<Customer>> SearchCustomersByLastNameAsync(string? searchText)
         {
             if (string.IsNullOrWhiteSpace(searchText))
